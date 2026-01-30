@@ -15,6 +15,16 @@ function BetterAuthDemo() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
+  const signInWithGoogle = async () => {
+    const data = await authClient.signIn.social({
+      provider: 'google',
+    })
+    
+    if (data.error) {
+      setError(data.error.message || 'Sign in failed')
+    }
+  }
+
   if (isPending) {
     return (
       <div className="flex items-center justify-center py-10">
@@ -196,6 +206,13 @@ function BetterAuthDemo() {
             ) : (
               'Sign in'
             )}
+          </button>
+          <button
+            type="button"
+            onClick={signInWithGoogle}
+            className="w-full h-9 px-4 text-sm font-medium text-white bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Sign in with Google
           </button>
         </form>
 

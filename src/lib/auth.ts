@@ -10,5 +10,13 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  socialProviders: {
+    google: {
+      prompt: 'select_account',
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+    },
+  },
+  baseURL: process.env.BETTER_AUTH_URL!,
   plugins: [tanstackStartCookies()],
 })
