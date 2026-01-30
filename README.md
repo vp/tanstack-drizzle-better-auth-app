@@ -21,7 +21,7 @@ Create `.env.local` (example values only; don’t commit secrets):
 DATABASE_URL=./pglocal.db
 
 # Better Auth base URL (must match where your app runs)
-BETTER_AUTH_URL=http://localhost:3000
+BETTER_AUTH_URL=http://localhost:3330
 
 # Better Auth secret (generate your own)
 BETTER_AUTH_SECRET=replace_me
@@ -51,8 +51,8 @@ pnpm dev
 
 Open:
 
-- App: `http://localhost:3000`
-- Auth demo: `http://localhost:3000/demo/better-auth`
+- App: `http://localhost:3330`
+- Auth demo: `http://localhost:3330/demo/better-auth`
 
 ## Database (Drizzle + PGlite)
 
@@ -83,8 +83,8 @@ pnpm db:studio   # open Drizzle Studio
 
 In Google Cloud Console, create an OAuth client and set:
 
-- **Authorized JavaScript origins**: `http://localhost:3000`
-- **Authorized redirect URIs**: `http://localhost:3000/api/auth/callback/google`
+- **Authorized JavaScript origins**: `http://localhost:3330`
+- **Authorized redirect URIs**: `http://localhost:3330/api/auth/callback/google`
 
 For production, repeat the above with your production domain and set:
 

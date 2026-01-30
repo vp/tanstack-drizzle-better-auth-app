@@ -19,10 +19,17 @@ function BetterAuthDemo() {
     const data = await authClient.signIn.social({
       provider: 'google',
     })
-    
+
     if (data.error) {
       setError(data.error.message || 'Sign in failed')
     }
+  }
+
+  const signInWithMicrosoft = async () => {
+    const data = await authClient.signIn.social({
+      provider: 'microsoft',
+      callbackURL: '/', // The URL to redirect to after the sign in
+    })
   }
 
   if (isPending) {
@@ -213,6 +220,13 @@ function BetterAuthDemo() {
             className="w-full h-9 px-4 text-sm font-medium text-white bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Sign in with Google
+          </button>
+          <button
+            type="button"
+            onClick={signInWithMicrosoft}
+            className="w-full h-9 px-4 text-sm font-medium text-white bg-neutral-900 hover:bg-neutral-800 dark:bg-neutral-50 dark:text-neutral-900 dark:hover:bg-neutral-200 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            Sign in with Microsoft
           </button>
         </form>
 
