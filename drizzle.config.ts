@@ -26,3 +26,4 @@ export default defineConfig({
   dialect: 'postgresql',
   ...(usePostgres() ? postgresCredentials : pgliteCredentials),
 })
+ 
