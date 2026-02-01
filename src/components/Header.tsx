@@ -1,6 +1,5 @@
 import { Link } from '@tanstack/react-router'
 
-import BetterAuthHeader from '../integrations/better-auth/header-user.tsx'
 
 import { useState } from 'react'
 import {
@@ -15,6 +14,7 @@ import {
   StickyNote,
   X,
 } from 'lucide-react'
+import BetterAuthHeader from '../integrations/better-auth/header-user.tsx'
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false)
@@ -102,7 +102,7 @@ export default function Header() {
           </Link>
 
           <Link
-            to="/demo/better-auth"
+            to="/auth"
             onClick={() => setIsOpen(false)}
             className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-800 transition-colors mb-2"
             activeProps={{
@@ -111,7 +111,7 @@ export default function Header() {
             }}
           >
             <Globe size={20} />
-            <span className="font-medium">Better Auth</span>
+            <span className="font-medium">Authentication</span>
           </Link>
 
           <Link

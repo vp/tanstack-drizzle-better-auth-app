@@ -1,14 +1,20 @@
-import { createFileRoute, useRouter } from '@tanstack/react-router'
+import { createFileRoute, redirect, useRouter } from '@tanstack/react-router'
 import { createServerFn } from '@tanstack/react-start'
 import { desc } from 'drizzle-orm'
 import { db } from '@/db/index'
-import { todos } from '@/db/schema'
+import { todos as todosTable } from '@/db/schema'
+import { authMiddleware } from '@/midlewares/auth-middleware'
+import { getUserSession } from '@/services/auth/get-user-session'
 
 const getTodos = createServerFn({
   method: 'GET',
-}).handler(async () => {
+})
+.middleware([authMiddleware])
+.handler(async ({ context }) => {
+  const userId = context.userSession.user.id
   return await db.query.todos.findMany({
-    orderBy: [desc(todos.createdAt)],
+    where: (t, { eq }) => eq(t.userId, userId),
+    orderBy: [desc(todosTable.createdAt)],
   })
 })
 
@@ -16,13 +22,28 @@ const createTodo = createServerFn({
   method: 'POST',
 })
   .inputValidator((data: { title: string }) => data)
-  .handler(async ({ data }) => {
-    await db.insert(todos).values({ title: data.title })
+  .middleware([authMiddleware])
+  .handler(async ({ data, context }) => {
+    await db.insert(todosTable).values({
+      title: data.title,
+      userId: context.userSession.user.id,
+    })
     return { success: true }
   })
 
 export const Route = createFileRoute('/demo/drizzle')({
   component: DemoDrizzle,
+  server: {
+    middleware: [authMiddleware],
+  },
+  beforeLoad: async () => {
+    const session = await getUserSession()
+    if (!session) {
+      throw redirect({ to: '/auth' })
+    }
+
+    return { user: session.user }
+  },
   loader: async () => await getTodos(),
 })
 
@@ -122,7 +143,6 @@ function DemoDrizzle() {
             style={{
               background: 'rgba(93, 103, 227, 0.1)',
               borderColor: 'rgba(93, 103, 227, 0.3)',
-              focusRing: 'rgba(93, 103, 227, 0.5)',
             }}
           />
           <button

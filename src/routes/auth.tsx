@@ -2,7 +2,7 @@ import { createFileRoute } from '@tanstack/react-router'
 import { useState } from 'react'
 import { authClient } from '@/lib/auth-client'
 
-export const Route = createFileRoute('/demo/better-auth')({
+export const Route = createFileRoute('/auth')({
   component: BetterAuthDemo,
 })
 
@@ -22,6 +22,7 @@ function BetterAuthDemo() {
 
     if (data.error) {
       setError(data.error.message || 'Sign in failed')
+      return
     }
   }
 
@@ -30,6 +31,11 @@ function BetterAuthDemo() {
       provider: 'microsoft',
       callbackURL: '/', // The URL to redirect to after the sign in
     })
+
+    if (data.error) {
+      setError(data.error.message || 'Sign in with Microsoft failed')
+      return
+    }
   }
 
   if (isPending) {
@@ -59,7 +65,7 @@ function BetterAuthDemo() {
             ) : (
               <div className="h-10 w-10 bg-neutral-200 dark:bg-neutral-800 flex items-center justify-center">
                 <span className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
-                  {session.user.name?.charAt(0).toUpperCase() || 'U'}
+                  {session.user.name.charAt(0).toUpperCase()}
                 </span>
               </div>
             )}
